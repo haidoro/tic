@@ -66,29 +66,38 @@ class Game extends React.Component {
             history: [{
                 squares: Array(9).fill(null)
             }],
+            stepNumber: 0,
             xIsNext: true
         };
     }
 
     handleClick(i) {
-        const history = this.state.history;
+        const history = this.state.history.slice(0, this.state.stepNumber + 1);
         const current = history[history.length - 1];
         const squares = current.squares.slice();
         if (calculateWinner(squares) || squares[i]) {
             return;
         }
-        squares[i] = this.state.xIsNext ? 'X' : 'O';
+        squares[i] = this.state.xIsNext ? "X" : "O";
         this.setState({
             history: history.concat([{
                 squares: squares
             }]),
-            xIsNext: !this.state.xIsNext,
+            stepNumber: history.length,
+            xIsNext: !this.state.xIsNext
+        });
+    }
+
+    jumpTo(step) {
+        this.setState({
+            stepNumber: step,
+            xIsNext: (step % 2) === 0
         });
     }
 
     render() {
         const history = this.state.history;
-        const current = history[history.length - 1];
+        const current = history[this.state.stepNumber];
         const winner = calculateWinner(current.squares);
 
         const moves = history.map((step, move) => {
@@ -111,9 +120,9 @@ class Game extends React.Component {
 
         let status;
         if (winner) {
-            status = 'Winner: ' + winner;
+            status = "Winner: " + winner;
         } else {
-            status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
+            status = "Next player: " + (this.state.xIsNext ? "X" : "O");
         }
 
         return ( <
@@ -125,7 +134,7 @@ class Game extends React.Component {
                 current.squares
             }
             onClick = {
-                (i) => this.handleClick(i)
+                i => this.handleClick(i)
             }
             /> <
             /div> <
@@ -152,7 +161,7 @@ function calculateWinner(squares) {
         [1, 4, 7],
         [2, 5, 8],
         [0, 4, 8],
-        [2, 4, 6],
+        [2, 4, 6]
     ];
     for (let i = 0; i < lines.length; i++) {
         const [a, b, c] = lines[i];
@@ -162,6 +171,5 @@ function calculateWinner(squares) {
     }
     return null;
 }
-
 
 export default Game
