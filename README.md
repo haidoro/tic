@@ -38,7 +38,7 @@ yarn start
 原因はwebpackのバージョンがグローバルのものと今回導入したローカル環境のもので違っているのが原因でした。グローバルのバージョンをローカルのものに合わせて無事エラーは解決。
 
 ## 3つのコンポーネント作成
-次の3つのコンポーネントを作成。どれもclassでコンポーネントを定義します。
+次の3つのコンポーネントを作成。どれもclassでコンポーネントを定義します。イベントの設定はありませんのでこの章ではマス目に0から8までの数字が表示されてお終いです。
 
 * Square
 * Board
@@ -66,7 +66,7 @@ JSXの記述のベースはjavascriptの世界です。
 次に、ボタンの表示内容は {this.props.value} となります。
 {this.props.value}の使い方がここでのポイントになります。
 
-props：親から渡される情報
+propsは別のコンポーネントに値やコールバック関数を渡すことができます。
 
 Reactにおける値の渡し方はpropsを介して渡す仕組みになっています。
 今回の例ではBoardからSquareへデータを渡しています。
@@ -75,7 +75,32 @@ Reactにおける値の渡し方はpropsを介して渡す仕組みになって�
 ### Boardコンポーネント
 現段階ではBoardコンポーネントが中心の母体の役割をします。
 
+このコンポーネントでは `renderSquare(i){return <Square value={i} />;}`を定義しています。
+
+定義したrenderSquare関数は自身のrender()内で実行しています。
+render()は引数として記述したタグを書き出すためのものです。
+この中でrenderSquare関数を実行しています。引数はそれぞれ0から8までの整数が与えられています。
+renderSquare関数が実行されるとpropsを通じてSquareコンポーネントに値が渡されてボタンタグの中に0から8までの数値が表示されることになります。
+
+表示結果は以下のようになります。
+```
+<div id="root">
+<div class="game">
+<div class="game-board">
+<div>
+<div class="status"> Next player: X </div> 
+<div class="board-row"> <button class="square"> 0 </button> <button class="square"> 1 </button> <button class="square"> 2 </button> </div>
+ <div class="board-row"> <button class="square"> 3 </button> <button class="square"> 4 </button> <button class="square"> 5 </button> </div> 
+ <div class="board-row"> <button class="square"> 6 </button> <button class="square"> 7 </button> <button class="square"> 8 </button> </div> 
+ </div>
+ </div> 
+ <div class="game-info"><div>  
+ </div> <ol>  </ol> </div> 
+ </div></div>
+```
+
+
 ### Gameコンポーネント
 Gameコンポーネントはここでは何もしていません。
 ただBoardコンポーネントを呼び出して、 ReactDOM.render()に渡しているだけです。
-以降の章で活用するものです。
+Gameコンポーネントは以降の章で活用するものです。
