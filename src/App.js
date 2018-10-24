@@ -20,12 +20,13 @@ class Board extends React.Component {
   }
 
   handleClick(i) {
-    const squares = this.state.squares.slice();
-    squares[i] = "X";
-    this.setState({
-      squares: squares
-    });
-  }
+    // const squares = this.state.squares.slice();
+    // squares[i] = "X";
+    this.setState(()=>{return this.state.squares[i] = "X"});
+    //do not mutate state directly.
+    // use setstate().
+    //(react/no-direct-mutation-state)
+      }
 
   renderSquare(i) {
     return (
